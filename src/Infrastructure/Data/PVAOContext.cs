@@ -38,6 +38,8 @@ namespace PVAO.Infrastructure.Data
             builder.Property(x => x.MinPasswordLength).IsRequired(true);
             builder.Property(x => x.MinSpecialCharacters).IsRequired(true);
             builder.Property(x => x.EnforcePasswordHistory).IsRequired(true);
+            builder.Property(x => x.ActivationLinkExpiresIn).IsRequired(true);
+            builder.Property(x => x.BaseUrl).IsRequired(false); 
             builder.Property(x => x.CreatedBy).IsRequired(true);
             builder.Property(x => x.DateCreated).IsRequired(true);
             builder.Property(x => x.UpdatedBy).IsRequired(false);
