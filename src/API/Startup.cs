@@ -50,6 +50,9 @@ namespace PVAO
             services.AddDbContext<PVAOContext>(options =>
               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddDbContext<IVDMSContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("iVDMSConnection")));
+
             services.Configure<TokenOptions>(Configuration.GetSection("TokenOptions"));
 
             services.AddScoped(typeof(ISettingsRepository), typeof(SettingsRepository));
