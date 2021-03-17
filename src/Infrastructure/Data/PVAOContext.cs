@@ -4,7 +4,7 @@ using PVAO.ApplicationCore.Entities.Structure;
 
 namespace PVAO.Infrastructure.Data
 {
-    public class PVAOContext : DbContext
+    public class PVAOContext : DbContext 
     {
         public PVAOContext(DbContextOptions<PVAOContext> options) : base(options)
         {
