@@ -16,6 +16,7 @@ namespace PVAO.Infrastructure.Data
         public DbSet<PasswordHistory> PasswordHistories { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Settings> Settings { get; set; }
+        public DbSet<BenefitStatus> BenefitStatuses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -26,6 +27,23 @@ namespace PVAO.Infrastructure.Data
             builder.Entity<PasswordHistory>(ConfigurePasswordHistory);
             builder.Entity<Role>(ConfigureRole);
             builder.Entity<Settings>(ConfigureSettings);
+            builder.Entity<BenefitStatus>(ConfigureBenefitStatus);
+        }
+
+        private void ConfigureBenefitStatus(EntityTypeBuilder<BenefitStatus> builder)
+        {
+            builder.ToTable("BenefitStatus");
+
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).UseIdentityColumn();
+
+            builder.Property(x => x.Description).IsRequired();
+            builder.Property(x => x.Prefix).IsRequired();
+            builder.Property(x => x.Claimant).IsRequired();
+            builder.Property(x => x.CreatedBy).IsRequired();
+            builder.Property(x => x.DateCreated).IsRequired();
+            builder.Property(x => x.UpdatedBy).IsRequired(false);
+            builder.Property(x => x.DateUpdated).IsRequired(false);
         }
 
         private void ConfigureCompany(EntityTypeBuilder<Company> builder)
