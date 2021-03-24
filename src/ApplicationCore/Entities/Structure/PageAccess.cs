@@ -4,18 +4,30 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace PVAO.ApplicationCore.Entities.Security
+namespace PVAO.ApplicationCore.Entities.Structure
 {
-    public class Role : BaseEntity<int>
+    public class PageAccess
     {
         [DataMember]
         public int Id { get; set; }
 
         [DataMember]
-        public string RoleName { get; set; }
+        public int PageId { get; set; }
 
         [DataMember]
-        public string Description { get; set; }
+        public int RoleId { get; set; }
+
+        [DataMember]
+        public bool CanCreate { get; set; }
+
+        [DataMember]
+        public bool CanRead { get; set; }
+
+        [DataMember]
+        public bool CanUpdate { get; set; }
+
+        [DataMember]
+        public bool CanDelete { get; set; }
 
         [DataMember]
         public int CreatedBy { get; set; }

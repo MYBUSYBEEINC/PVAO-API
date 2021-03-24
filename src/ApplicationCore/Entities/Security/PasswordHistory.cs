@@ -6,27 +6,18 @@ using System.Text;
 
 namespace PVAO.ApplicationCore.Entities.Security
 {
-    public class Role : BaseEntity<int>
+    public class PasswordHistory : BaseEntity<int>
     {
         [DataMember]
         public int Id { get; set; }
 
         [DataMember]
-        public string RoleName { get; set; }
+        public int UserID { get; set; }
 
         [DataMember]
-        public string Description { get; set; }
-
-        [DataMember]
-        public int CreatedBy { get; set; }
+        public string Password { get; set; }
 
         [DataMember]
         public DateTime DateCreated { get; set; }
-
-        [DataMember]
-        public int? UpdatedBy { get; set; }
-
-        [DataMember]
-        public DateTime? DateUpdated { get; set; }
     }
 }

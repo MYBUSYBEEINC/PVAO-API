@@ -4,15 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace PVAO.ApplicationCore.Entities.Security
+namespace PVAO.ApplicationCore.Entities.Structure
 {
-    public class Role : BaseEntity<int>
+    public class UserStatus : BaseEntity<int>
     {
         [DataMember]
         public int Id { get; set; }
-
-        [DataMember]
-        public string RoleName { get; set; }
 
         [DataMember]
         public string Description { get; set; }

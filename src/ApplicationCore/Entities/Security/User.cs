@@ -1,54 +1,65 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace PVAO.ApplicationCore.Entities.Security
 {
-    public class User
+    public class User : BaseEntity<int>
     {
         [DataMember]
-        public int id { get; set; }
+        public int Id { get; set; }
 
         [DataMember]
-        public string userName { get; set; }
+        public string LastName { get; set; }
 
         [DataMember]
-        public string userPassword { get; set; }
+        public string FirstName { get; set; }
 
         [DataMember]
-        public string fullName { get; set; }
+        public string UserName { get; set; }
 
         [DataMember]
-        public string email { get; set; }
+        public string Password { get; set; }
 
         [DataMember]
-        public DateTime? passwordExpiry { get; set; }
+        public string EmailAddress { get; set; }
 
         [DataMember]
-        public string userEnabled { get; set; }
+        public string PhoneNumber { get; set; }
 
         [DataMember]
-        public DateTime? lastLogin { get; set; }
+        public string Address { get; set; }
 
         [DataMember]
-        public string userRole { get; set; }
+        public int UserStatus { get; set; }
 
         [DataMember]
-        public string dockOff { get; set; }
+        public string AvatarUrl { get; set; }
 
         [DataMember]
-        public string divisionCode { get; set; }
+        public string SignOnAttempts { get; set; }
 
         [DataMember]
-        public string createdBy { get; set; }
+        public bool LoggedIn { get; set; }
 
         [DataMember]
-        public DateTime? dateCreated { get; set; }
+        public DateTime ExpirationDate { get; set; }
 
         [DataMember]
-        public string modifiedBy { get; set; }
+        public string PasswordToken { get; set; }
 
         [DataMember]
-        public DateTime? dateModified { get; set; }
+        public int CreatedBy { get; set; }
+
+        [DataMember]
+        public DateTime DateCreated { get; set; }
+
+        [DataMember]
+        public int? UpdatedBy { get; set; }
+
+        [DataMember]
+        public DateTime? DateUpdated { get; set; }
     }
 }

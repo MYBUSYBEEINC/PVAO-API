@@ -6,16 +6,16 @@ using System.Text;
 
 namespace PVAO.ApplicationCore.Entities.Security
 {
-    public class Role : BaseEntity<int>
+    public class UserRole : BaseEntity<int>
     {
         [DataMember]
         public int Id { get; set; }
 
         [DataMember]
-        public string RoleName { get; set; }
+        public int UserId { get; set; }
 
         [DataMember]
-        public string Description { get; set; }
+        public int RoleId { get; set; }
 
         [DataMember]
         public int CreatedBy { get; set; }
