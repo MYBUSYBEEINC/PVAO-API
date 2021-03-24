@@ -39,7 +39,7 @@ namespace PVAO.Infrastructure.Data
 
             builder.Property(x => x.Description).IsRequired();
             builder.Property(x => x.Prefix).IsRequired();
-            builder.Property(x => x.Claimant).IsRequired();
+            builder.Property(x => x.Claimant).IsRequired(false);
             builder.Property(x => x.CreatedBy).IsRequired();
             builder.Property(x => x.DateCreated).IsRequired();
             builder.Property(x => x.UpdatedBy).IsRequired(false);
