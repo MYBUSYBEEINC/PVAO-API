@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PVAO.Infrastructure.Data;
 
 namespace PVAO.Infrastructure.Migrations
 {
     [DbContext(typeof(PVAOContext))]
-    partial class PVAOContextModelSnapshot : ModelSnapshot
+    [Migration("20210325025644_add-benefit-status-table")]
+    partial class addbenefitstatustable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
