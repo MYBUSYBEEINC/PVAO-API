@@ -57,6 +57,8 @@ namespace PVAO
 
             services.AddScoped(typeof(ISettingsRepository), typeof(SettingsRepository));
             services.AddScoped(typeof(ISettingsService), typeof(SettingsService));
+            services.AddScoped(typeof(IBenefitStatusRepository), typeof(BenefitStatusRepository));
+            services.AddScoped(typeof(IBenefitStatusService), typeof(BenefitStatusService));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
