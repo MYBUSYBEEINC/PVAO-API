@@ -11,23 +11,31 @@ namespace PVAO.Infrastructure.Data
         {
         }
 
+        public DbSet<BenefitStatus> BenefitStatuses { get; set; }
         public DbSet<Company> Company { get; set; }
         public DbSet<Page> Pages { get; set; }
+        public DbSet<PageAccess> PageAccess { get; set; }
         public DbSet<PasswordHistory> PasswordHistories { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Settings> Settings { get; set; }
-        public DbSet<BenefitStatus> BenefitStatuses { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserStatus> UserStatus { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<BenefitStatus>(ConfigureBenefitStatus);
             builder.Entity<Company>(ConfigureCompany);
             builder.Entity<Page>(ConfigurePage);
+            builder.Entity<PageAccess>(ConfigurePageAccess);
             builder.Entity<PasswordHistory>(ConfigurePasswordHistory);
             builder.Entity<Role>(ConfigureRole);
             builder.Entity<Settings>(ConfigureSettings);
-            builder.Entity<BenefitStatus>(ConfigureBenefitStatus);
+            builder.Entity<UserRole>(ConfigureUserRole);
+            builder.Entity<User>(ConfigureUser);
+            builder.Entity<UserStatus>(ConfigureUserStatus);
         }
 
         private void ConfigureBenefitStatus(EntityTypeBuilder<BenefitStatus> builder)
@@ -37,11 +45,11 @@ namespace PVAO.Infrastructure.Data
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).UseIdentityColumn();
 
-            builder.Property(x => x.Description).IsRequired();
-            builder.Property(x => x.Prefix).IsRequired();
-            builder.Property(x => x.Claimant).IsRequired(false);
-            builder.Property(x => x.CreatedBy).IsRequired();
-            builder.Property(x => x.DateCreated).IsRequired();
+            builder.Property(x => x.Description).HasMaxLength(250).IsRequired(true);
+            builder.Property(x => x.Prefix).HasMaxLength(15).IsRequired(true);
+            builder.Property(x => x.Claimant).HasMaxLength(150).IsRequired(false);
+            builder.Property(x => x.CreatedBy).IsRequired(true);
+            builder.Property(x => x.DateCreated).IsRequired(true);
             builder.Property(x => x.UpdatedBy).IsRequired(false);
             builder.Property(x => x.DateUpdated).IsRequired(false);
         }
@@ -130,6 +138,76 @@ namespace PVAO.Infrastructure.Data
             builder.Property(x => x.EnforcePasswordHistory).IsRequired(true);
             builder.Property(x => x.ActivationLinkExpiresIn).IsRequired(true);
             builder.Property(x => x.BaseUrl).HasMaxLength(150).IsRequired(false);
+            builder.Property(x => x.CreatedBy).IsRequired(true);
+            builder.Property(x => x.DateCreated).IsRequired(true);
+            builder.Property(x => x.UpdatedBy).IsRequired(false);
+            builder.Property(x => x.DateUpdated).IsRequired(false);
+        }
+
+        private void ConfigureUserRole(EntityTypeBuilder<UserRole> builder)
+        {
+            builder.ToTable("UserRole");
+
+            builder.HasKey(x => new { x.Id, x.UserId, x.RoleId });
+            builder.Property(x => x.Id).UseIdentityColumn();
+
+            builder.Property(x => x.CreatedBy).IsRequired(true);
+            builder.Property(x => x.DateCreated).IsRequired(true);
+            builder.Property(x => x.UpdatedBy).IsRequired(false);
+            builder.Property(x => x.DateUpdated).IsRequired(false);
+        }
+
+        private void ConfigureUser(EntityTypeBuilder<User> builder)
+        {
+            builder.ToTable("Users");
+
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).UseIdentityColumn();
+
+            builder.Property(x => x.LastName).HasMaxLength(35).IsRequired(true);
+            builder.Property(x => x.FirstName).HasMaxLength(35).IsRequired(true);
+            builder.Property(x => x.UserName).HasMaxLength(25).IsRequired(true);
+            builder.Property(x => x.Password).IsRequired(true);
+            builder.Property(x => x.EmailAddress).HasMaxLength(50).IsRequired(true);
+            builder.Property(x => x.PhoneNumber).HasMaxLength(30).IsRequired(false);
+            builder.Property(x => x.Address).HasMaxLength(450).IsRequired(true);
+            builder.Property(x => x.UserStatus).IsRequired(true);
+            builder.Property(x => x.AvatarUrl).HasMaxLength(150).IsRequired(false);
+            builder.Property(x => x.SignOnAttempts).IsRequired(true);
+            builder.Property(x => x.LoggedIn).IsRequired(true);
+            builder.Property(x => x.ExpirationDate).IsRequired(true);
+            builder.Property(x => x.PasswordToken).HasMaxLength(650).IsRequired(false);
+            builder.Property(x => x.CreatedBy).IsRequired(true);
+            builder.Property(x => x.DateCreated).IsRequired(true);
+            builder.Property(x => x.UpdatedBy).IsRequired(false);
+            builder.Property(x => x.DateUpdated).IsRequired(false);
+        }
+
+        private void ConfigureUserStatus(EntityTypeBuilder<UserStatus> builder)
+        {
+            builder.ToTable("UserStatus");
+
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).UseIdentityColumn();
+
+            builder.Property(x => x.Description).HasMaxLength(250).IsRequired(true);
+            builder.Property(x => x.CreatedBy).IsRequired(true);
+            builder.Property(x => x.DateCreated).IsRequired(true);
+            builder.Property(x => x.UpdatedBy).IsRequired(false);
+            builder.Property(x => x.DateUpdated).IsRequired(false);
+        }
+
+        private void ConfigurePageAccess(EntityTypeBuilder<PageAccess> builder)
+        {
+            builder.ToTable("PageAccess");
+
+            builder.HasKey(x => new { x.Id, x.PageId, x.RoleId });
+            builder.Property(x => x.Id).UseIdentityColumn();
+
+            builder.Property(x => x.CanCreate).IsRequired(true);
+            builder.Property(x => x.CanRead).IsRequired(true);
+            builder.Property(x => x.CanUpdate).IsRequired(true);
+            builder.Property(x => x.CanDelete).IsRequired(true);
             builder.Property(x => x.CreatedBy).IsRequired(true);
             builder.Property(x => x.DateCreated).IsRequired(true);
             builder.Property(x => x.UpdatedBy).IsRequired(false);
