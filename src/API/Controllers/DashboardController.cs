@@ -25,5 +25,11 @@ namespace PVAO.API.Controllers
         {
             return _veteransService.Get();
         }
+
+        [HttpGet("[action]")]
+        public int GetVeteransCount()
+        {
+            return _veteransService.Get().Count();
+        }
     }
 }
