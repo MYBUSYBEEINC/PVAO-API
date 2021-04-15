@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using PVAO.API.Models;
 using PVAO.ApplicationCore.Entities.IVDMS;
 using PVAO.ApplicationCore.Entities.Structure;
 using PVAO.ApplicationCore.Interfaces;
@@ -32,6 +34,21 @@ namespace PVAO.API.Controllers
         {
             // get beneficiaries
             return _beneficiariesService.Get();
+        }
+
+        [HttpGet("[action]")]
+        public async Task<OverremittanceDetailsModel> GetOverremittanceDetails()
+        {
+            var veteran = await _veteransService.GetById(1);
+            var beneficiary = await _beneficiariesService.GetById(1);
+
+            var overremittanceDetailsModel = new OverremittanceDetailsModel
+            {
+                Beneficiary = beneficiary,
+                Veteran = veteran
+            };
+
+            return overremittanceDetailsModel;
         }
     }
 }

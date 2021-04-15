@@ -20,18 +20,29 @@ namespace PVAO.ApplicationCore.Entities.IVDMS
         [DataMember]
         public string LastName { get; set; }
 
-        [DataMember]
+        [DataMember]    
         public DateTime DateOfBirth { get; set; }
 
         [DataMember]
         public string Sex { get; set; }
-        
-        public int Age
-        {
-            get
-            {
-                return DateTime.Now.Year - DateOfBirth.Year;
-            }
-        }
+
+        [DataMember]
+        public string CurrentAddress1 { get; set; }
+
+        [DataMember]
+        public string CurrentAddress2 { get; set; }
+
+        [DataMember]
+        public string CurrentAddress3 { get; set; }
+
+        [DataMember]
+        public string CurrentZipCode { get; set; }
+
+        [DataMember]
+        public string RelationCode { get; set; }
+
+        public string FullAddress => $"{CurrentAddress1}, {CurrentAddress2}, {CurrentAddress3}, {CurrentZipCode}";
+
+        public int Age => DateTime.Now.Year - DateOfBirth.Year;
     }
 }
