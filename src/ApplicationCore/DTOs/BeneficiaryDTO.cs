@@ -13,12 +13,5 @@ namespace PVAO.ApplicationCore.DTOs
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Sex { get; set; }
-        public int Age
-        {
-            get
-            {
-                return DateTime.Now.Year - DateOfBirth.Year;
-            }
-        }
     }
 }

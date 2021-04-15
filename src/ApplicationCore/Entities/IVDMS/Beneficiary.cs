@@ -25,5 +25,13 @@ namespace PVAO.ApplicationCore.Entities.IVDMS
 
         [DataMember]
         public string Sex { get; set; }
+        
+        public int Age
+        {
+            get
+            {
+                return DateTime.Now.Year - DateOfBirth.Year;
+            }
+        }
     }
 }
