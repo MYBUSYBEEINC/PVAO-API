@@ -12,11 +12,13 @@ namespace PVAO.API.Controllers
     {
         private readonly IBenefitStatusService _benefitStatusService;
         private readonly IVeteransService _veteransService;
+        private readonly IBeneficiariesService _beneficiariesService;
 
-        public OverRemittanceController(IBenefitStatusService benefitStatusService, IVeteransService veteransService)
+        public OverRemittanceController(IBenefitStatusService benefitStatusService, IVeteransService veteransService, IBeneficiariesService beneficiariesService)
         {
             _benefitStatusService = benefitStatusService;
             _veteransService = veteransService;
+            _beneficiariesService = beneficiariesService;
         }
 
         [HttpGet("[action]")]
@@ -26,9 +28,10 @@ namespace PVAO.API.Controllers
         }
 
         [HttpGet("[action]")]
-        public IEnumerable<Veteran> GetOverremittanceList()
+        public IEnumerable<Beneficiary> GetOverremittanceList()
         {
-            return _veteransService.Get();
+            // get beneficiaries
+            return _beneficiariesService.Get();
         }
     }
 }

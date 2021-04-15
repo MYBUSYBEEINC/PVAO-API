@@ -1,11 +1,15 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace PVAO.ApplicationCore.Entities.IVDMS
 {
-    public class Veteran : BaseEntity<int>
+    public class Beneficiary : BaseEntity<int>
     {
         [DataMember]
-        public int VdmsNo { get; set; }
+        public int Id { get; set; }
+
+        [DataMember]
+        public string VdmsNo { get; set; }
 
         [DataMember]
         public string FirstName { get; set; }
@@ -17,7 +21,7 @@ namespace PVAO.ApplicationCore.Entities.IVDMS
         public string LastName { get; set; }
 
         [DataMember]
-        public int Age { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
         [DataMember]
         public string Sex { get; set; }
