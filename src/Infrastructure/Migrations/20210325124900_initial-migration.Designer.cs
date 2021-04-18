@@ -10,8 +10,8 @@ using PVAO.Infrastructure.Data;
 namespace PVAO.Infrastructure.Migrations
 {
     [DbContext(typeof(PVAOContext))]
-    [Migration("20210325021522_add-pageaccess-table")]
-    partial class addpageaccesstable
+    [Migration("20210325124900_initial-migration")]
+    partial class initialmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -141,9 +141,8 @@ namespace PVAO.Infrastructure.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
-                    b.Property<string>("SignOnAttempts")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("SignOnAttempts")
+                        .HasColumnType("int");
 
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
@@ -191,6 +190,46 @@ namespace PVAO.Infrastructure.Migrations
                     b.HasKey("Id", "UserId", "RoleId");
 
                     b.ToTable("UserRole");
+                });
+
+            modelBuilder.Entity("PVAO.ApplicationCore.Entities.Structure.BenefitStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Claimant")
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("Prefix")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(15)")
+                        .HasMaxLength(15);
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BenefitStatus");
                 });
 
             modelBuilder.Entity("PVAO.ApplicationCore.Entities.Structure.Company", b =>

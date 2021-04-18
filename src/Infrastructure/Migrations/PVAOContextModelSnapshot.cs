@@ -139,9 +139,8 @@ namespace PVAO.Infrastructure.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
-                    b.Property<string>("SignOnAttempts")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("SignOnAttempts")
+                        .HasColumnType("int");
 
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");

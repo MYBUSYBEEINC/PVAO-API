@@ -8,6 +8,25 @@ namespace PVAO.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "BenefitStatus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(maxLength: 250, nullable: false),
+                    Prefix = table.Column<string>(maxLength: 15, nullable: false),
+                    Claimant = table.Column<string>(maxLength: 150, nullable: true),
+                    CreatedBy = table.Column<int>(nullable: false),
+                    DateCreated = table.Column<DateTime>(nullable: false),
+                    UpdatedBy = table.Column<int>(nullable: true),
+                    DateUpdated = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BenefitStatus", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Company",
                 columns: table => new
                 {
@@ -48,6 +67,28 @@ namespace PVAO.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Page", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PageAccess",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PageId = table.Column<int>(nullable: false),
+                    RoleId = table.Column<int>(nullable: false),
+                    CanCreate = table.Column<bool>(nullable: false),
+                    CanRead = table.Column<bool>(nullable: false),
+                    CanUpdate = table.Column<bool>(nullable: false),
+                    CanDelete = table.Column<bool>(nullable: false),
+                    CreatedBy = table.Column<int>(nullable: false),
+                    DateCreated = table.Column<DateTime>(nullable: false),
+                    UpdatedBy = table.Column<int>(nullable: true),
+                    DateUpdated = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PageAccess", x => new { x.Id, x.PageId, x.RoleId });
                 });
 
             migrationBuilder.CreateTable(
@@ -146,7 +187,7 @@ namespace PVAO.Infrastructure.Migrations
                     Address = table.Column<string>(maxLength: 450, nullable: false),
                     UserStatus = table.Column<int>(nullable: false),
                     AvatarUrl = table.Column<string>(maxLength: 150, nullable: true),
-                    SignOnAttempts = table.Column<string>(nullable: false),
+                    SignOnAttempts = table.Column<int>(nullable: false),
                     LoggedIn = table.Column<bool>(nullable: false),
                     ExpirationDate = table.Column<DateTime>(nullable: false),
                     PasswordToken = table.Column<string>(maxLength: 650, nullable: true),
@@ -181,10 +222,16 @@ namespace PVAO.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "BenefitStatus");
+
+            migrationBuilder.DropTable(
                 name: "Company");
 
             migrationBuilder.DropTable(
                 name: "Page");
+
+            migrationBuilder.DropTable(
+                name: "PageAccess");
 
             migrationBuilder.DropTable(
                 name: "PasswordHistory");

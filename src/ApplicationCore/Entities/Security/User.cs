@@ -39,7 +39,7 @@ namespace PVAO.ApplicationCore.Entities.Security
         public string AvatarUrl { get; set; }
 
         [DataMember]
-        public string SignOnAttempts { get; set; }
+        public int SignOnAttempts { get; set; }
 
         [DataMember]
         public bool LoggedIn { get; set; }
