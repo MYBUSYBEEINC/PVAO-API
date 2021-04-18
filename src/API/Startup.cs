@@ -55,16 +55,17 @@ namespace PVAO
 
             services.Configure<TokenOptions>(Configuration.GetSection("TokenOptions"));
 
-            services.AddScoped(typeof(ISettingsRepository), typeof(SettingsRepository));
-            services.AddScoped(typeof(IBenefitStatusRepository), typeof(BenefitStatusRepository));
-            services.AddScoped(typeof(IVeteransRepository), typeof(VeteransRepository));
+            services.AddScoped(typeof(IVeteranRepository), typeof(VeteranRepository));
             services.AddScoped(typeof(IBeneficiaryRepository), typeof(BeneficiaryRepository));
+            services.AddScoped(typeof(IBenefitStatusRepository), typeof(BenefitStatusRepository));
+            services.AddScoped(typeof(IBankRepository), typeof(BankRepository));
+            services.AddScoped(typeof(ISettingsRepository), typeof(SettingsRepository));
 
-            services.AddScoped(typeof(ISettingsService), typeof(SettingsService));
+            services.AddScoped(typeof(IVeteranService), typeof(VeteranService));
+            services.AddScoped(typeof(IBeneficiaryService), typeof(BeneficiaryService));
             services.AddScoped(typeof(IBenefitStatusService), typeof(BenefitStatusService));
-            services.AddScoped(typeof(IVeteransService), typeof(VeteransService));
-            services.AddScoped(typeof(IBeneficiariesService), typeof(BeneficiariesService));
-            
+            services.AddScoped(typeof(IBankService), typeof(BankService));
+            services.AddScoped(typeof(ISettingsService), typeof(SettingsService));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

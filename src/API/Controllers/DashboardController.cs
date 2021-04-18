@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PVAO.ApplicationCore.Entities.IVDMS;
+using PVAO.ApplicationCore.Entities.Structure;
 using PVAO.ApplicationCore.Interfaces;
 
 namespace PVAO.API.Controllers
@@ -13,9 +10,9 @@ namespace PVAO.API.Controllers
     [Route("[controller]")]
     public class DashboardController : ControllerBase
     {
-        private readonly IVeteransService _veteransService;
+        private readonly IVeteranService _veteransService;
 
-        public DashboardController(IVeteransService veteransService)
+        public DashboardController(IVeteranService veteransService)
         {
             _veteransService = veteransService;
         }
