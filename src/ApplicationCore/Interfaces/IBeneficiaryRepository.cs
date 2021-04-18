@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PVAO.ApplicationCore.Entities.IVDMS;
+using PVAO.ApplicationCore.Entities.Structure;
 
 namespace PVAO.ApplicationCore.Interfaces
 {
@@ -11,6 +11,7 @@ namespace PVAO.ApplicationCore.Interfaces
     {
         IQueryable<Beneficiary> Get();
         Task<Beneficiary> GetById(int id);
+        Beneficiary GetByVeteranId(string veteranId);
         Task<Beneficiary> Add(Beneficiary settings);
         Task<Beneficiary> Update(Beneficiary settings);
     }

@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PVAO.ApplicationCore.DTOs;
-using PVAO.ApplicationCore.Entities.IVDMS;
+using PVAO.ApplicationCore.Entities.Structure;
 
 namespace PVAO.ApplicationCore.Interfaces
 {
-    public interface IBeneficiariesService
+    public interface IBeneficiaryService
     {
         IQueryable<Beneficiary> Get();
         Task<Beneficiary> GetById(int id);
+        Beneficiary GetByVeteranId(string veteranId);
         Task<Beneficiary> Add(BeneficiaryDTO beneficiaryDTO);
         Task<Beneficiary> Update(BeneficiaryDTO beneficiaryDTO);
     }
