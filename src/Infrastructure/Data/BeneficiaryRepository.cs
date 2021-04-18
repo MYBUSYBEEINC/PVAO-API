@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PVAO.ApplicationCore.Entities.IVDMS;
+using PVAO.ApplicationCore.Entities.Structure;
 using PVAO.ApplicationCore.Interfaces;
 
 namespace PVAO.Infrastructure.Data
@@ -22,6 +22,11 @@ namespace PVAO.Infrastructure.Data
         public async Task<Beneficiary> GetById(int id)
         {
             return await GetByIdAsync(id);
+        }
+
+        public Beneficiary GetByVeteranId(string veteranId)
+        {
+            return _dbContext.Beneficiaries.FirstOrDefault(x => x.vdmsNo == veteranId);
         }
 
         public async Task<Beneficiary> Add(Beneficiary beneficiary)
