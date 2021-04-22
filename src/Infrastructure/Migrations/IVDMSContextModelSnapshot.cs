@@ -127,6 +127,73 @@ namespace PVAO.Infrastructure.Migrations
                     b.ToTable("claims_family");
                 });
 
+            modelBuilder.Entity("PVAO.ApplicationCore.Entities.Structure.Cheque", b =>
+                {
+                    b.Property<decimal?>("checkAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("checkNumber")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("checkRemarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("checkStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("checkType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("claimNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("dateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("dateIssued")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("dateRemitted")
+                        .HasColumnType("datetime2");
+
+                    b.ToTable("claims_checks");
+                });
+
+            modelBuilder.Entity("PVAO.ApplicationCore.Entities.Structure.ClaimApplication", b =>
+                {
+                    b.Property<string>("claimNo")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("benefitCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("dateApproved")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("dateFiled")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("firstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("lastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("middleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("referenceNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("vdmsNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("claimNo");
+
+                    b.ToTable("claims_applications");
+                });
+
             modelBuilder.Entity("PVAO.ApplicationCore.Entities.Structure.Veteran", b =>
                 {
                     b.Property<int>("vdmsno")

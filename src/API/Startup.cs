@@ -53,19 +53,30 @@ namespace PVAO
             services.AddDbContext<IVDMSContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("iVDMSConnection")));
 
+            services.AddDbContext<FMISContext>(options =>
+               options.UseSqlServer(Configuration.GetConnectionString("FMISConnection")));
+
             services.Configure<TokenOptions>(Configuration.GetSection("TokenOptions"));
 
-            services.AddScoped(typeof(IVeteranRepository), typeof(VeteranRepository));
+            services.AddScoped(typeof(IBankRepository), typeof(BankRepository));
             services.AddScoped(typeof(IBeneficiaryRepository), typeof(BeneficiaryRepository));
             services.AddScoped(typeof(IBenefitStatusRepository), typeof(BenefitStatusRepository));
-            services.AddScoped(typeof(IBankRepository), typeof(BankRepository));
+            services.AddScoped(typeof(IChequeRepository), typeof(ChequeRepository));
+            services.AddScoped(typeof(IClaimApplicationRepository), typeof(ClaimApplicationRepository));
+            services.AddScoped(typeof(IClaimChequeRepository), typeof(ClaimChequeRepository));
             services.AddScoped(typeof(ISettingsRepository), typeof(SettingsRepository));
+            services.AddScoped(typeof(IVeteranRepository), typeof(VeteranRepository));
+            services.AddScoped(typeof(IBenefitCodeRepository), typeof(BenefitCodeRepository));
 
-            services.AddScoped(typeof(IVeteranService), typeof(VeteranService));
+            services.AddScoped(typeof(IBankService), typeof(BankService));
             services.AddScoped(typeof(IBeneficiaryService), typeof(BeneficiaryService));
             services.AddScoped(typeof(IBenefitStatusService), typeof(BenefitStatusService));
-            services.AddScoped(typeof(IBankService), typeof(BankService));
+            services.AddScoped(typeof(IChequeService), typeof(ChequeService));
+            services.AddScoped(typeof(IClaimApplicationService), typeof(ClaimApplicationService));
+            services.AddScoped(typeof(IClaimChequeService), typeof(ClaimChequeService));
             services.AddScoped(typeof(ISettingsService), typeof(SettingsService));
+            services.AddScoped(typeof(IVeteranService), typeof(VeteranService));
+            services.AddScoped(typeof(IBenefitCodeService), typeof(BenefitCodeService));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

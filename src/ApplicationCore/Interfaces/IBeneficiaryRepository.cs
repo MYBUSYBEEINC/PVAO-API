@@ -11,7 +11,7 @@ namespace PVAO.ApplicationCore.Interfaces
     {
         IQueryable<Beneficiary> Get();
         Task<Beneficiary> GetById(int id);
-        Beneficiary GetByVeteranId(string veteranId);
+        IQueryable<Beneficiary> GetOverRemittances();
         Task<Beneficiary> Add(Beneficiary settings);
         Task<Beneficiary> Update(Beneficiary settings);
     }

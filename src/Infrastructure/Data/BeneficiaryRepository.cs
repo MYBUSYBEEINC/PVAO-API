@@ -24,9 +24,9 @@ namespace PVAO.Infrastructure.Data
             return await GetByIdAsync(id);
         }
 
-        public Beneficiary GetByVeteranId(string veteranId)
+        public IQueryable<Beneficiary> GetOverRemittances()
         {
-            return _dbContext.Beneficiaries.FirstOrDefault(x => x.vdmsNo == veteranId);
+            return _dbContext.Beneficiaries;
         }
 
         public async Task<Beneficiary> Add(Beneficiary beneficiary)

@@ -10,23 +10,32 @@ namespace PVAO.API.Controllers
     [Route("[controller]")]
     public class DashboardController : ControllerBase
     {
-        private readonly IVeteranService _veteransService;
+        private readonly IVeteranService _veteranService;
+        private readonly IBeneficiaryService _beneficiaryService;
 
-        public DashboardController(IVeteranService veteransService)
+        public DashboardController(IVeteranService veteranService, IBeneficiaryService beneficiaryService)
         {
-            _veteransService = veteransService;
+            _veteranService = veteranService;
+            _beneficiaryService = beneficiaryService;
         }
 
         [HttpGet("[action]")]
         public IEnumerable<Veteran> Get()
         {
-            return _veteransService.Get();
+            return _veteranService.Get();
         }
 
         [HttpGet("[action]")]
-        public int GetVeteransCount()
+        public int GetTotalVeterans()
         {
-            return _veteransService.Get().Count();
+            return _veteranService.Get().Count();
+        }
+
+
+        [HttpGet("[action]")]
+        public int GetTotalBeneficiaries()
+        {
+            return _beneficiaryService.Get().Count();
         }
     }
 }

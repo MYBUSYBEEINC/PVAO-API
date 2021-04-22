@@ -26,9 +26,9 @@ namespace PVAO.ApplicationCore.Services
             return await _repository.GetById(id);
         }
 
-        public Beneficiary GetByVeteranId(string veteranId)
+        public IQueryable<Beneficiary> GetOverRemittances()
         {
-            return _repository.GetByVeteranId(veteranId);
+            return _repository.GetOverRemittances();
         }
 
         public async Task<Beneficiary> Add(BeneficiaryDTO beneficiaryDTO)

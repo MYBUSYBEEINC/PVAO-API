@@ -8,6 +8,43 @@ namespace PVAO.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "claims_applications",
+                columns: table => new
+                {
+                    claimNo = table.Column<string>(nullable: false),
+                    vdmsNo = table.Column<string>(nullable: false),
+                    benefitCode = table.Column<string>(nullable: true),
+                    lastName = table.Column<string>(nullable: true),
+                    firstName = table.Column<string>(nullable: true),
+                    middleName = table.Column<string>(nullable: true),
+                    referenceNumber = table.Column<string>(nullable: true),
+                    dateFiled = table.Column<DateTime>(nullable: true),
+                    dateApproved = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_claims_applications", x => x.claimNo);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "claims_checks",
+                columns: table => new
+                {
+                    claimNo = table.Column<string>(nullable: true),
+                    checkNumber = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    checkStatus = table.Column<string>(nullable: true),
+                    dateIssued = table.Column<DateTime>(nullable: true),
+                    checkAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    checkType = table.Column<string>(nullable: true),
+                    checkRemarks = table.Column<string>(nullable: true),
+                    dateRemitted = table.Column<DateTime>(nullable: true),
+                    dateCreated = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                });
+
+            migrationBuilder.CreateTable(
                 name: "claims_family",
                 columns: table => new
                 {
@@ -92,6 +129,12 @@ namespace PVAO.Infrastructure.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "claims_applications");
+
+            migrationBuilder.DropTable(
+                name: "claims_checks");
+
             migrationBuilder.DropTable(
                 name: "claims_family");
 
