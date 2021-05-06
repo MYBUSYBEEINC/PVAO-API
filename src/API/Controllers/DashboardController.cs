@@ -31,7 +31,6 @@ namespace PVAO.API.Controllers
             return _veteranService.Get().Count();
         }
 
-
         [HttpGet("[action]")]
         public int GetTotalBeneficiaries()
         {

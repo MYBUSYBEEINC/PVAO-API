@@ -19,15 +19,17 @@ namespace PVAO.API.Controllers
         private readonly IBeneficiaryService _beneficiaryService;
         private readonly IVeteranService _veteranService;
         private readonly IBenefitCodeService _benefitCodeService;
+        private readonly IBenefitStatusService _benefitStatusService;
 
         public BeneficiaryController(IClaimApplicationService claimApplicationService, IClaimChequeService claimChequeService, IBeneficiaryService beneficiaryService,
-            IVeteranService veteranService, IBenefitCodeService benefitCodeService)
+            IVeteranService veteranService, IBenefitCodeService benefitCodeService, IBenefitStatusService benefitStatusService)
         {
             _claimApplicationService = claimApplicationService;
             _claimChequeService = claimChequeService;
             _beneficiaryService = beneficiaryService;
             _veteranService = veteranService;
             _benefitCodeService = benefitCodeService;
+            _benefitStatusService = benefitStatusService;
         }
 
         [HttpGet("[action]")]
@@ -37,7 +39,7 @@ namespace PVAO.API.Controllers
 
             var paginatedList = await PaginatedList<ClaimApplication>.CreateAsync(result, currentPage, pageSize);
 
-            List<object> overRemittances = new List<object>();
+            List<OverRemittance> overRemittances = new List<OverRemittance>();
 
             foreach (var item in paginatedList)
             {
@@ -49,23 +51,26 @@ namespace PVAO.API.Controllers
 
                     var beneficiary = _beneficiaryService.Get().Where(x => x.lastName.Equals(item.lastName) && x.firstName.Equals(item.firstName) && x.middleName.Equals(item.middleName)).FirstOrDefault();
 
-                    var data = new
+                    overRemittances.Add(new OverRemittance()
                     {
-                        claimNumber = item.claimNo,
-                        benefitCode = _benefitCodeService.Get().FirstOrDefault(x => x.benefitCode == item.benefitCode).benefit,
-                        vdmsNumber = item.vdmsNo,
-                        beneficiaryName = string.Format("{0}, {1} {2}", item.lastName, item.firstName, item.middleName),
-                        relation = beneficiary.relationCode,
-                        gender = beneficiary.sex,
-                        amount = Convert.ToDecimal(claimCheque).ToString("#,##0.00"),
-                        status = "For Computation"
-                    };
-
-                    overRemittances.Add(data);
+                        ClaimNumber = item.claimNo,
+                        BenefitCode = _benefitCodeService.Get().FirstOrDefault(x => x.benefitCode == item.benefitCode).benefit,
+                        VdmsNumber = item.vdmsNo,
+                        BeneficiaryName = string.Format("{0}, {1} {2}", item.lastName, item.firstName, item.middleName),
+                        Relation = beneficiary.relationCode,
+                        Gender = beneficiary.sex,
+                        Amount = Convert.ToDecimal(claimCheque).ToString("#,##0.00"),
+                        Status = "For Computation",
+                        DateApproved = item.dateApproved
+                    });
                 }
             }
 
-            return Ok(new { overRemittances, totalItems = overRemittances.Count(), paginatedList.PageCount, paginatedList.PageSize });
+            var years = overRemittances.GroupBy(x => x.DateApproved.Value.Year).Select(s => s.Key).ToList();
+
+            var months = overRemittances.Select(s => s.DateApproved.Value.ToShortDateString()).ToList();
+
+            return Ok(new { overRemittances, totalItems = overRemittances.Count(), years, months, paginatedList.PageCount, paginatedList.PageSize });
         }
 
         [HttpGet("[action]")]
@@ -103,6 +108,12 @@ namespace PVAO.API.Controllers
             };
 
             return Ok(new { overRemittance });
+        }
+
+        [HttpGet("[action]")]
+        public IEnumerable<BenefitStatus> GetBenefitStatus()
+        {
+            return _benefitStatusService.Get();
         }
     }
 }
