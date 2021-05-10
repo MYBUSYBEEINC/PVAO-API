@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -33,10 +34,26 @@ namespace PVAO.API.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetOverRemittances([FromQuery] int currentPage, [FromQuery] int pageSize)
+        public async Task<IActionResult> GetOverRemittances([FromQuery] string searchValue = "", [FromQuery] int? year = null, [FromQuery] string month = "", [FromQuery] int currentPage = 1, [FromQuery] int pageSize = 10)
         {
             IQueryable<ClaimApplication> result = _claimApplicationService.Get();
 
+            if (!string.IsNullOrEmpty(searchValue))
+            {
+                result = result.Where(x => x.claimNo.ToLower().Contains(searchValue.ToLower()) || x.vdmsNo.ToLower().Contains(searchValue.ToLower()) || x.lastName.ToLower().Contains(searchValue.ToLower()) ||
+                    x.firstName.ToLower().Contains(searchValue.ToLower()) || x.middleName.ToLower().Contains(searchValue.ToLower()) || x.benefitCode.ToLower().Contains(searchValue.ToLower()));
+            }
+
+            if (year != null)
+                result = result.Where(x => x.dateApproved.Value.Year == year);
+
+            if (!string.IsNullOrEmpty(month))
+            {
+                int monthInteger = DateTime.ParseExact(month, "MMMM", CultureInfo.CurrentCulture).Month;
+
+                result = result.Where(x => x.dateApproved.Value.Year == year && x.dateApproved.Value.Month == monthInteger);
+            }
+                
             var paginatedList = await PaginatedList<ClaimApplication>.CreateAsync(result, currentPage, pageSize);
 
             List<OverRemittance> overRemittances = new List<OverRemittance>();
@@ -66,11 +83,7 @@ namespace PVAO.API.Controllers
                 }
             }
 
-            var years = overRemittances.GroupBy(x => x.DateApproved.Value.Year).Select(s => s.Key).ToList();
-
-            var months = overRemittances.Select(s => s.DateApproved.Value.ToShortDateString()).ToList();
-
-            return Ok(new { overRemittances, totalItems = overRemittances.Count(), years, months, paginatedList.PageCount, paginatedList.PageSize });
+            return Ok(new { overRemittances, totalItems = overRemittances.Count(), paginatedList.PageCount, paginatedList.PageSize });
         }
 
         [HttpGet("[action]")]
@@ -114,6 +127,47 @@ namespace PVAO.API.Controllers
         public IEnumerable<BenefitStatus> GetBenefitStatus()
         {
             return _benefitStatusService.Get();
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetYearsAndMonthsAsync()
+        {
+            IQueryable<ClaimApplication> result = _claimApplicationService.Get();
+
+            var paginatedList = await PaginatedList<ClaimApplication>.CreateAsync(result, 1, 1000000000);
+
+            List<OverRemittance> overRemittances = new List<OverRemittance>();
+
+            foreach (var item in paginatedList)
+            {
+                var veteran = await _veteranService.GetById(int.Parse(item.vdmsNo));
+
+                if (veteran.mortalStatus == "DECEASED")
+                {
+                    double claimCheque = (double)_claimChequeService.Get().Where(x => x.claimNo == item.claimNo && x.dateCreated >= veteran.dateOfDeath).Sum(x => x.checkAmount);
+
+                    var beneficiary = _beneficiaryService.Get().Where(x => x.lastName.Equals(item.lastName) && x.firstName.Equals(item.firstName) && x.middleName.Equals(item.middleName)).FirstOrDefault();
+
+                    overRemittances.Add(new OverRemittance()
+                    {
+                        ClaimNumber = item.claimNo,
+                        BenefitCode = _benefitCodeService.Get().FirstOrDefault(x => x.benefitCode == item.benefitCode).benefit,
+                        VdmsNumber = item.vdmsNo,
+                        BeneficiaryName = string.Format("{0}, {1} {2}", item.lastName, item.firstName, item.middleName),
+                        Relation = beneficiary.relationCode,
+                        Gender = beneficiary.sex,
+                        Amount = Convert.ToDecimal(claimCheque).ToString("#,##0.00"),
+                        Status = "For Computation",
+                        DateApproved = item.dateApproved
+                    });
+                }
+            }
+
+            var years = overRemittances.GroupBy(x => x.DateApproved.Value.Year).Select(s => s.Key).ToList();
+
+            var months = overRemittances.Select(s => s.DateApproved.Value.ToShortDateString()).ToList();
+
+            return Ok(new { years, months });
         }
     }
 }
