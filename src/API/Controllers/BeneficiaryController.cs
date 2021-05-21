@@ -34,7 +34,7 @@ namespace PVAO.API.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetOverRemittances([FromQuery] string searchValue = "", [FromQuery] int? year = null, [FromQuery] string month = "", [FromQuery] int currentPage = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetOverRemittances([FromQuery] string searchValue = "", [FromQuery] int? year = null, [FromQuery] string month = "", [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             IQueryable<ClaimApplication> result = _claimApplicationService.Get();
 
@@ -54,7 +54,7 @@ namespace PVAO.API.Controllers
                 result = result.Where(x => x.dateApproved.Value.Year == year && x.dateApproved.Value.Month == monthInteger);
             }
                 
-            var paginatedList = await PaginatedList<ClaimApplication>.CreateAsync(result, currentPage, pageSize);
+            var paginatedList = await PaginatedList<ClaimApplication>.CreateAsync(result, pageNumber, pageSize);
 
             List<OverRemittance> overRemittances = new List<OverRemittance>();
 
@@ -83,7 +83,7 @@ namespace PVAO.API.Controllers
                 }
             }
 
-            return Ok(new { overRemittances, totalItems = overRemittances.Count(), paginatedList.PageCount, paginatedList.PageSize });
+            return Ok(new { overRemittances, totalItems = await GetTotalOverremittanceCount(overRemittances, result), paginatedList.PageCount, paginatedList.PageSize });
         }
 
         [HttpGet("[action]")]
@@ -169,5 +169,22 @@ namespace PVAO.API.Controllers
 
             return Ok(new { years, months });
         }
+
+        #region Private Methods
+
+        private async Task<int> GetTotalOverremittanceCount(List<OverRemittance> overRemittances, IQueryable<ClaimApplication> claimApplications)
+        {
+            int totalCount = 0;
+            foreach (ClaimApplication item in claimApplications.ToList())
+            {
+                var veteran =  await _veteranService.GetById(int.Parse(item.vdmsNo));
+                if (veteran == null) throw new ApplicationException($"Veteran with Id {item.vdmsNo} not found!");
+                if (veteran.mortalStatus == "DECEASED") totalCount++;
+            }
+
+            return totalCount;
+        }
+
+        #endregion
     }
 }
