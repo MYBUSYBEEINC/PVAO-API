@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PVAO.ApplicationCore.Entities.Structure;
 using PVAO.ApplicationCore.Helpers;
@@ -34,7 +33,7 @@ namespace PVAO.API.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetOverRemittances([FromQuery] string searchValue = "", [FromQuery] int? year = null, [FromQuery] string month = "", [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetOverRemittances([FromQuery] string searchValue = "", [FromQuery] int? year = null, [FromQuery] string month = "", [FromQuery] int currentPage = 1, [FromQuery] int pageSize = 10)
         {
             IQueryable<ClaimApplication> result = _claimApplicationService.Get();
 
@@ -54,7 +53,7 @@ namespace PVAO.API.Controllers
                 result = result.Where(x => x.dateApproved.Value.Year == year && x.dateApproved.Value.Month == monthInteger);
             }
                 
-            var paginatedList = await PaginatedList<ClaimApplication>.CreateAsync(result, pageNumber, pageSize);
+            var paginatedList = await PaginatedList<ClaimApplication>.CreateAsync(result, currentPage, pageSize);
 
             List<OverRemittance> overRemittances = new List<OverRemittance>();
 
@@ -83,7 +82,7 @@ namespace PVAO.API.Controllers
                 }
             }
 
-            return Ok(new { overRemittances, totalItems = await GetTotalOverremittanceCount(overRemittances, result), paginatedList.PageCount, paginatedList.PageSize });
+            return Ok(new { overRemittances, totalItems = result.Count(), paginatedList.PageCount, paginatedList.PageSize });
         }
 
         [HttpGet("[action]")]
